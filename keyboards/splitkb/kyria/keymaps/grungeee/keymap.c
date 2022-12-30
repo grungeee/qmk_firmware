@@ -571,6 +571,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }else{
            if ( layer_state_is(_RAISE)){
             layer_move(_QWERTY);
+           }
 
         }
       break;
@@ -667,10 +668,10 @@ void qwerty_nav_finished(qk_tap_dance_state_t *state, void *user_data) {
             layer_move(_LOWER);
             break;
         case TD_DOUBLE_TAP:
-            if (layer_state_is(_RAISE)) {
-                layer_move(_LOWER);
-            } else if (layer_state_is(_LOWER)) {
-                layer_move(_QWERTY);
+            if (layer_state_is(_LOWER)) {
+                layer_off(_LOWER);
+            } else {
+                layer_on(_LOWER);
             }
             break;
         case TD_NONE:
@@ -682,13 +683,14 @@ void qwerty_nav_finished(qk_tap_dance_state_t *state, void *user_data) {
             break;
     }
 }
-        
+
 void qwerty_nav_reset(qk_tap_dance_state_t *state, void *user_data) {
     if (ql_tap_state.state == TD_SINGLE_HOLD) {
         layer_move(_RAISE);
     }
     ql_tap_state.state = TD_NONE;
 }
+
 
 //&  ===========< test >==============
 //&  ===========< test >==============
