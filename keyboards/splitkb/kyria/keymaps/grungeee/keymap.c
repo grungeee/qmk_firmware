@@ -655,10 +655,10 @@ void ql_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 //- QWERTY and LOWER layer
 // Functions associated with individual tap dances
-void qwerty_nav_finished(qk_tap_dance_state_t *state, void *user_data);
-void qwerty_nav_reset(qk_tap_dance_state_t *state, void *user_data);
+void triLayerTD_finished(qk_tap_dance_state_t *state, void *user_data);
+void triLayerTD_reset(qk_tap_dance_state_t *state, void *user_data);
 
-void qwerty_nav_finished(qk_tap_dance_state_t *state, void *user_data) {
+void triLayerTD_finished(qk_tap_dance_state_t *state, void *user_data) {
     ql_tap_state.state = cur_dance(state);
     switch (ql_tap_state.state) {
         case TD_SINGLE_TAP:
@@ -684,7 +684,7 @@ void qwerty_nav_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void qwerty_nav_reset(qk_tap_dance_state_t *state, void *user_data) {
+void triLayerTD_reset(qk_tap_dance_state_t *state, void *user_data) {
     if (ql_tap_state.state == TD_SINGLE_HOLD) {
         layer_move(_RAISE);
     }
@@ -967,8 +967,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 qk_tap_dance_action_t tap_dance_actions[] = {
     // [ENT_NAV]  ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, ql_finished, ql_reset, 150),
     // [CT_SCLN] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, dance_scln_finished, dance_scln_reset, 150),
+    //& triLayerTD_finished
+    [QWERTY_LOWER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, triLayerTD_finished, triLayerTD_reset),
     [ENT_NAV] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_finished, ql_reset),
-    [QWERTY_LOWER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, qwerty_nav_finished, qwerty_nav_reset),
     [SCLN_COLN] = ACTION_TAP_DANCE_FN_ADVANCED(on_scln_end, scln_end_finished, scln_end_reset),
     [COMM_LABK] = ACTION_TAP_DANCE_FN_ADVANCED(on_comm_end, comm_end_finished, comm_end_reset),
     [DOT_RABK] = ACTION_TAP_DANCE_FN_ADVANCED(on_dot_end, dot_end_finished, dot_end_reset),
