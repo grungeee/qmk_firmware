@@ -46,6 +46,7 @@ enum {
     COMM_LABK,
     DOT_RABK,
     SLSH_QUES,
+    QUOT_DQUO
 };
 
 
@@ -81,6 +82,7 @@ enum custom_keycodes {          // Make sure have the awesome keycode ready
 
 
 
+// ! modifiers are limited and can't be used in tapdances
 //- Modifiers
 #define SFT_ALT LSFT(MOD_LALT)
 #define CTL_ALT LCTL(MOD_LALT)
@@ -124,27 +126,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_LALT,      KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                               KC_H,    KC_J,    KC_K,    KC_L,    TD(SCLN_COLN), KC_QUOT,
       ALT_TAB,      KC_Z,   KC_X,   KC_C,   KC_V,   KC_B, _______, OS_SFT,  /*   */  OS_CTL, _______,  KC_N,   KC_M,    TD(COMM_LABK), TD(DOT_RABK),  TD(SLSH_QUES), KC_ESC,
                                     TASK_VIEW, _______ , TD(ENT_NAV), KC_SPC, OS_CTL,  /*   */    OS_SFT, OSL(RAISE), KC_BSPC, _______, KC_MPLY
-                                    // TASK_VIEW, _______ , TD(ENT_NAV), KC_SPC, OS_SFT,  /*   */    OS_CTL, OSL(RAISE), KC_BSPC, _______, KC_MPLY
     ),
+
 // : modifiers for sft/ctl should probably be used with a combo or tap-dance
     [_LOWER] = LAYOUT(
       _______, KC_ESC, _______, _______, _______, _______,                                                    _______, KC_7, KC_8, KC_9, KC_BSPC, _______,
-      _______, KC_TAB, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                                    _______, KC_4, KC_5, KC_6, KC_ENT, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, KC_CAPS, TO(ADJUST),/*       */ TO(_GAMING), KC_NUM, KC_0, KC_1, KC_2, KC_3, _______, _______,
-                                 TASK_VIEW, _______, _______, TD(QWERTY_LOWER), SFT_ALT,/*       */ CTL_ALT, XXXXXXX, _______, _______, _______
-                                //  _______, _______, _______, TO(QWERTY), KC_LGUI,/*     */ KC_LALT, XXXXXXX, _______, _______, _______
+      KC_TAB, KC_LCTL, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                                    _______, KC_4, KC_5, KC_6, KC_ENT, _______,
+      _______, KC_LSFT, _______, _______, KC_MUTE, KC_VOLD, KC_CAPS, TO(ADJUST),/*       */ TO(ADJUST), KC_NUM, KC_0, KC_1, KC_2, KC_3, _______, _______,
+                                 TASK_VIEW, _______, _______, KC_SPC, SFT_ALT,  /*       */ CTL_ALT, XXXXXXX, _______, _______, _______
     ),
 
     [_RAISE] = LAYOUT(
-      _______, KC_ESC, KC_EXLM, KC_LCBR, KC_RCBR, KC_AT,                                                  KC_GRV , KC_TILD, KC_AMPR, KC_ASTR, KC_BSPC, _______,
+      _______, KC_ESC, KC_AT, KC_LCBR, KC_RCBR, KC_EXLM,                                                  KC_GRV , KC_TILD, KC_AMPR, KC_ASTR, KC_BSPC, _______,
       _______, KC_TAB, KC_DLR,  KC_LPRN, KC_RPRN, KC_HASH,                                                KC_UNDS, KC_MINS, KC_EQL , KC_PIPE, KC_ENT, _______,
-      _______, _______, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, _______, KC_LSFT,/*      */ KC_LCTL, TEST, _______, KC_PLUS, KC_BSLS, _______, _______, _______,
+      _______, _______, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, TO(LOWER), KC_LSFT,/*      */ KC_LCTL, TO(LOWER), _______, KC_PLUS, KC_BSLS, _______, _______, _______,
                                  TASK_VIEW, _______, _______, TD(QWERTY_LOWER), KC_LCTL,/*   */ KC_LSFT, XXXXXXX, _______, _______, _______
-                                //  _______, _______, _______, TO(QWERTY), MOD_MEH,/*   */ KC_LALT, TO(LOWER), _______, _______, _______
     ),
 
      [_NAV] = LAYOUT(
-    //    _______, _______, KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2, KC_MS_WH_UP,                                          KC_HOME, KC_PGDN, KC_PGUP, KC_END , _______, _______,
        _______, KC_ESC, KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2, KC_MS_WH_UP,                                          _______, KC_HOME, KC_END, _______ , KC_BSPC, _______,
        _______, KC_LCTL, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT, KC_MS_WH_DOWN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, _______, _______,
        _______, KC_LSFT, _______, _______, _______, _______, _______, _______,      _______, _______,KC_MS_BTN1,_______, KC_PGDN,  KC_PGUP, _______, _______,
@@ -176,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |ALT_TAB |   Z  |   X  |   C  |   V  |   B  |      |  CTL |  | Shift|      |   N  |   M  | ,  < | . >  | /  ? |  - _   |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | TASK |      |  NAV |Space |Shift |  |  CTL |      | Shift|     ||>/|| |
+ *                        | TASK |      |  NAV |Space |Shift |  |  CTL |      | BSPC |     ||>/|| |
  *                        | VIEW |      |      |      |      |  |      | Raise|      |     |      |
  *                        `----------------------------------'  `---------------------------------'
  * >====> Lower + Raise = Adjust <====<
@@ -187,15 +186,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Raise Layer: Symbols
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |  @   |  {   |  }   |  !   |                              |   `  |  ~   |  &   |  *   |      |        |
+ * |        |      |  @   |  {   |  }   |  !   |                              |   `  |  ~   |  &   |  *   | BSPC |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |  $   |  (   |  )   |  #   |                              |   _  |  -   |  =   |  |   | ' "  |        |
+ * |        |      |  $   |  (   |  )   |  #   |                              |   _  |  -   |  =   |  |   | ENTER|  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |  ^   |  [   |  ]   |  %   |      |      |  |      |      |      |  +   |  \   |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
+ *                        | TASK |      |  NAV |Space/|Shift |  |  CTL |      | Shift|     ||>/|| |
+ *                        | VIEW |      |      |Lower |      |  |      | Raise|      |     |      |
+ *                        `----------------------------------'  `---------------------------------'
  */
 
 /*
@@ -217,11 +216,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Navigation Layer
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |  LC  |  Up  |  RC  |ScrlUp|                              | pg dn| home | end  |pg up |      |        |
+ * |        |      |  LC  |  Up  |  RC  |ScrlUp|                              |      | home | end  |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        | SPD0 |  <-  | Down |  ->  |ScrlDw|                              | left | down |  up  | right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        | SPD1 |      |      |      |      |      |      |  |      |      |      |  LC  |  RC  |      |      |        |
+ * |        | SPD1 |      |      |      |      |      |      |  |      |      |      |PG DN | PG UP|      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -236,7 +235,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |                              |      |  F4  |  F5  |  F6  | F11  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |      |  |      |      |      |  F1  |  F2  |  F3  | F11  |        |
+ * |        |      |      |      |      |      |      |      |  |      |      |      |  F1  |  F2  |  F3  | F10  |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -918,7 +917,61 @@ void slash_end_reset(qk_tap_dance_state_t *state, void *user_data) {
     dance_state.step = 0;
 }
 
+
+    [QUOT_DQUO] = = ACTION_TAP_DANCE_FN_ADVANCED(on_quot_end, quot_end_finished, quot_end_reset)
+
+
+//. Send ' on Single Tap, " on Hold
+void on_slash_end(qk_tap_dance_state_t *state, void *user_data);
+uint8_t slash_end_dance_step(qk_tap_dance_state_t *state);
+void slash_end_finished(qk_tap_dance_state_t *state, void *user_data);
+void slash_end_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void on_slash_end(qk_tap_dance_state_t *state, void *user_data) {
+    if(state->count == 3) {
+        tap_code16(KC_QUOT);
+        tap_code16(KC_QUOT);
+        tap_code16(KC_QUOT);
+    }
+    if(state->count > 3) {
+        tap_code16(KC_QUOT);
+    }
+}
+
+uint8_t slash_end_dance_step(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed) return SINGLE_TAP;
+        else return SINGLE_HOLD;
+    } else if (state->count == 2) {
+        if (state->interrupted) return DOUBLE_SINGLE_TAP;
+        else if (state->pressed) return DOUBLE_HOLD;
+        else return DOUBLE_TAP;
+    }
+    return MORE_TAPS;
+}
+
+void slash_end_finished(qk_tap_dance_state_t *state, void *user_data) {
+    dance_state.step = slash_end_dance_step(state);
+    switch (dance_state.step) {
+        case SINGLE_TAP: register_code16(KC_QUOT); break;
+        case SINGLE_HOLD: register_code16(KC_DQUO); break;
+        case DOUBLE_TAP: register_code16(KC_QUOT); register_code16(KC_DQUO); break; //^! this one prints a " on double tap
+        case DOUBLE_SINGLE_TAP: tap_code16(KC_QUOT); register_code16(KC_QUOT);
+    }
+}
+
+void slash_end_reset(qk_tap_dance_state_t *state, void *user_data) {
+    wait_ms(10);
+    switch (dance_state.step) {
+        case SINGLE_TAP: unregister_code16(KC_QUOT); break;
+        case SINGLE_HOLD: unregister_code16(KC_DQUO); break;
+        case DOUBLE_TAP: unregister_code16(KC_DQUO); break;
+        case DOUBLE_SINGLE_TAP: unregister_code16(KC_QUOT); break;
+    }
+    dance_state.step = 0;
+}
 //^! >===================/ /==================<
+//: this is a shorter version for only simple tapdances
 
 //- Send ; on Single Tap, : on Double Tap
 void dance_scln_finished(qk_tap_dance_state_t *state, void *user_data) {
@@ -955,6 +1008,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(SCLN_COLN):
         case TD(COMM_LABK):
         case TD(DOT_RABK):
+        case TD(QUOT_DQUO):
             return 130;
         default:
             return TAPPING_TERM;
@@ -974,6 +1028,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [COMM_LABK] = ACTION_TAP_DANCE_FN_ADVANCED(on_comm_end, comm_end_finished, comm_end_reset),
     [DOT_RABK] = ACTION_TAP_DANCE_FN_ADVANCED(on_dot_end, dot_end_finished, dot_end_reset),
     [SLSH_QUES] = ACTION_TAP_DANCE_FN_ADVANCED(on_slash_end, slash_end_finished, slash_end_reset),
+    [QUOT_DQUO] = = ACTION_TAP_DANCE_FN_ADVANCED(on_quot_end, quot_end_finished, quot_end_reset)
 };
 
 //& //////////////// END /////////////////////
